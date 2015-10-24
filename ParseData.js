@@ -1,6 +1,6 @@
-var fields = ["1st Max Value", "2nd Max Value", "Arithmetic Mean", "City Name", "Year"];
+var fields = ["1st Max Value", "2nd Max Value", "Arithmetic Mean", "City Name", "Year", "1st Max DateTime", "County Name"];
 function get_data(county_name, year, field, callback) {
-    var file = "data/data.csv";
+    var file = "data/Annual_All_Utah_Air_Quality_"+year+".csv";
     open_file(file, function (file) {
         processData(file, county_name, year, field, callback);
     });
@@ -20,7 +20,9 @@ function processData(file, county_name, year, field, callback) {
         dynamicTyping: true,
         complete: function(results) {
             results.data = results.data.filter(function(doctor) {
-                return doctor["County Code"] === county_name && doctor["Year"] === year && doctor["Parameter Name"] == field;
+                //return doctor["County Code"] === 3 && doctor["Year"] === year && doctor["Parameter Name"] == field;
+                return doctor["County Name"] != null && doctor["County Name"] != "" && (doctor["County Name"].indexOf(county_name) != -1 || county_name.indexOf(doctor["County Name"]) != -1) && doctor["Parameter Name"] === field;
+                //return (doctor["City Name"].indexOf("Davis") != -1) && doctor["Parameter Name"] == field;
             }).map(function(obj) {
                 var newObj = {};
                 for (var key in fields) {
