@@ -13,17 +13,33 @@
   /* This block is about how to make a Title*/
   var PROPERTY = ['Accept pm2.5 AQI', ];
   </script>
+  <style>
+  #property,
+  #storypanel {
+    float: left;
+    margin-top: 10px;
+  }
+  
+  .btn {
+    margin-bottom: 4px;
+  }
+  </style>
 </head>
-<style>
-#property,
-#storypanel {
-  float: left;
-}
-
-.btn {
-  margin-bottom: 4px;
-}
-</style>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Utah Air Quality</a>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</nav>
 
 <body>
   <div id="property">
@@ -56,12 +72,12 @@
   </div>
   <div id="storypanel"></div>
   <script>
-  var width = 800;
+  var width = 400;
   var height = 600;
 
   var svg = d3.select("#storypanel").append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(0,0)");
 
-  var projection = d3.geo.mercator().center([-110, 40]).scale(3000).translate([width / 3, height / 4]);
+  var projection = d3.geo.mercator().center([-110, 40]).scale(3500).translate([width / 1.4, height / 3.7]);
 
   var path = d3.geo.path().projection(projection);
 
@@ -80,8 +96,6 @@
       d3.select(this).attr("fill", " white");
     });
   });
-
-
 
   get_data("Davis", 2003, "Ozone", function(data) {});
   </script>
