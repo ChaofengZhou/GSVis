@@ -86,50 +86,54 @@ var PROPERTY = ['Accept pm2.5 AQI', ];
 			</ul>
 		</div>
 		<div id="storypanel"></div>
-	<script>
-		d3.text("data/Annual_All_Utah_Air_Quality_2003.csv",function(unparseData){
-			var data = d3.csv.parseRows(unparseData);
-			dataInitialization(data);
-		})
-		
-		//2003
-		var Ozene = {};
-		var AQI = [];
-		var Sulfate = [];
-		var Sulfur = [];
-		var PM25 = [];
-		var Humidity = [];
-		var Monoxide = [];
-		var Dioxide  = [];
-		
-		function dataInitialization(data){
-			Ozene["2003"] = {}
-			data.filter(function(doctor){
-				return doctor[6] === "Ozone";
-			}).forEach(function(obj) {
-				if(Ozene["2003"][obj[47]] == null ) {
-					Ozene["2003"][obj[47]] = obj[24];
-				} else {
-					Ozene["2003"][obj[47]] = Math.max(Ozene["2003"][obj[47]], obj[24]);
-				}
-			});
-		}
-	</script>
-		
-	<script>
+		<script>
+			d3.text("data/Annual_All_Utah_Air_Quality_2003.csv", function(unparseData) {
+				var data = d3.csv.parseRows(unparseData);
+				dataInitialization(data);
+				main();
+			})
+			//2003
+			var Ozene = {};
+			var AQI = [];
+			var Sulfate = [];
+			var Sulfur = [];
+			var PM25 = [];
+			var Humidity = [];
+			var Monoxide = [];
+			var Dioxide = [];
+
+			function dataInitialization(data) {
+				Ozene["2003"] = {}
+				data.filter(function(doctor) {
+					return doctor[6] === "Ozone";
+				}).forEach(function(obj) {
+					if (Ozene["2003"][obj[47]] == null) {
+						Ozene["2003"][obj[47]] = obj[24];
+					} else {
+						Ozene["2003"][obj[47]] = Math.max(Ozene["2003"][obj[47]], obj[24]);
+					}
+				});
+			}
+		</script>
+
+		<script>
 			var property = ['PM2.5 - Local Conditions', 'Acceptable PM2.5 AQI & Speciation Mass', 'sulfate PM 2.5 LC', 'sulfure PM 2.5 LC', 'Ozone', 'relative humidity', 'Carbon monoxide', 'sulfur dioxide'];
 
-			for (k in property) {
-				drawGeo(property[k], k);
+			function main() {
+
+				for (k in property) {
+					drawGeo(property[k], k);
+				}
+
+				//current show version
+				d3.select("#id0").attr("display", "block");
+
+				d3.selectAll("button").on("click", function(d, index) {
+					d3.selectAll(".geo").attr("display", "none");
+					d3.select("#id" + (index - 1)).attr("display", "block");
+				})
 			}
 
-			//current show version
-			d3.select("#id0").attr("display", "block");
-
-			d3.selectAll("button").on("click", function(d, index) {
-				d3.selectAll(".geo").attr("display", "none");
-				d3.select("#id" + (index-1)).attr("display", "block");
-			})
 			function drawGeo(p, index) {
 				var width = 400;
 				var height = 600;
@@ -147,18 +151,24 @@ var PROPERTY = ['Accept pm2.5 AQI', ];
 
 					var maximum;
 					var minimum;
-					var color = d3.scale.linear().domain([-1, 0, 1]).range(["red", "white", "green"]);
+					var color = d3.scale.linear().domain([0, 0, 1]).range(["green", "white", "red"]);
 					//get_data_max_min(p, function(max, min) {
 					//	minimum = min;
 					//	maximum = max;
-					//	
+					//
 					//});
 
 					svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
+
+						var name = d.properties.name;
+						for (k in Ozene["2003"]) {
+							if (name.indexOf(k) > -1)
+								return color(Ozene["2003"][k]);
+						}
 						//get_data(d.properties.name, '2003', 'ozone', function(data){
 						//	return 1;
 						//});
-						return color(index*0.05);
+						return color(index * 0.05);
 					}).attr("d", path).on("mouseover", function(d, i) {
 						//d3.select(this).attr("fill", "yellow");
 					}).on("mouseout", function(d, i) {
