@@ -146,6 +146,20 @@
   }
 
   function drawGeo(p, index) {
+    
+    var data;
+    
+    switch(+index){
+    	case 0: data = PM25;break;
+    	case 1: data = AQI;break;
+    	case 2: data = Sulfate;break;
+    	case 3: data = Sulfur;break;
+    	case 4: data = Ozene;break;
+    	case 5: data = Humidity;break;
+    	case 6: data = Monoxide;break;
+    	case 7: data = Dioxide;break;
+    }
+    
     var width = 400;
     var height = 600;
 
@@ -162,7 +176,14 @@
 
       var maximum;
       var minimum;
-      var color = d3.scale.linear().domain([0, 0, 1]).range(["green", "white", "red"]);
+      
+      var array=[];
+      for(k in data["2003"]){
+      	array.push(data["2003"][k]);
+      }
+      
+      
+      var color = d3.scale.linear().domain([d3.min(array),d3.max(array)]).range([0, 1]);
       //get_data_max_min(p, function(max, min) {
       //	minimum = min;
       //	maximum = max;
@@ -171,15 +192,14 @@
 
       svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
 
-        var name = d.properties.name;
-        for (k in AQI["2003"]) {
+        return "red"
+      }).attr("fill-opacity", function(d, i){
+      	var name = d.properties.name;
+        for (k in data["2003"]) {
           if (name.indexOf(k) > -1)
-            return color(AQI["2003"][k]);
+            return color(data["2003"][k]);
         }
-        //get_data(d.properties.name, '2003', 'ozone', function(data){
-        //	return 1;
-        //});
-        return color(index * 0.05);
+        return 0;
       }).attr("d", path).on("mouseover", function(d, i) {
         //d3.select(this).attr("fill", "yellow");
       }).on("mouseout", function(d, i) {
