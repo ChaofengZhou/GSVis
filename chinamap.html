@@ -86,13 +86,21 @@
       </li>
     </ul>
   </div>
+
+
   <div id="storypanel"></div>
   <script>
-  d3.text("data/Annual_All_Utah_Air_Quality_2003.csv", function(unparseData) {
-    var data = d3.csv.parseRows(unparseData);
-    dataInitialization(data);
-    main();
-  });
+  function initialization(year) {
+    if (year == 2014) {
+      main();
+    }
+    d3.text("data/Annual_All_Utah_Air_Quality_"+year+".csv", function (unparseData) {
+      var data = d3.csv.parseRows(unparseData);
+      dataInitialization(data, ""+year);
+      initialization(year+1);
+    });
+  }
+  initialization(2000);
 
   //2003
   var Ozene = {};
@@ -104,25 +112,25 @@
   var Monoxide = {};
   var Dioxide = {};
 
-  function dataInitialization(data) {
-    filterAndStore(data, Ozene, "Ozone");
-    filterAndStore(data, AQI, "AQI");
-    filterAndStore(data, Sulfate, "Sulfate PM2.5");
-    filterAndStore(data, PM25, "PM2.5 LC");
-    filterAndStore(data, Humidity, "Humidity");
-    filterAndStore(data, Monoxide, "Monoxide");
-    filterAndStore(data, Dioxide, "Dioxide");
+  function dataInitialization(data, year) {
+    filterAndStore(data, year, Ozene, "Ozone");
+    filterAndStore(data, year, AQI, "AQI");
+    filterAndStore(data, year, Sulfate, "Sulfate PM2.5");
+    filterAndStore(data, year, PM25, "PM2.5 LC");
+    filterAndStore(data, year, Humidity, "Humidity");
+    filterAndStore(data, year, Monoxide, "Monoxide");
+    filterAndStore(data, year, Dioxide, "Dioxide");
   }
 
-  function filterAndStore(data, arr, type) {
-    arr["2003"] = {};
+  function filterAndStore(data, year, arr, type) {
+    arr[year] = {};
     data.filter(function(doctor) {
       return doctor[6] != null && doctor[6] != "" && doctor[6].indexOf(type) != -1;
     }).forEach(function(obj) {
-      if (arr["2003"][obj[47]] == null) {
-        arr["2003"][obj[47]] = obj[24];
+      if (arr[year][obj[47]] == null) {
+        arr[year][obj[47]] = obj[24];
       } else {
-        arr["2003"][obj[47]] = Math.max(arr["2003"][obj[47]], obj[24]);
+        arr[year][obj[47]] = Math.max(arr[year][obj[47]], obj[24]);
       }
     });
   }
@@ -161,11 +169,11 @@
     }
     
     var width = 400;
-    var height = 600;
+    var height = 450;
 
     var svg = d3.select("#storypanel").append("svg").attr("width", width).attr("height", height).attr("id", getId(p)).attr("display", "none").attr("class", "geo").append("g").attr("transform", "translate(0,0)");
 
-    var projection = d3.geo.mercator().center([-110, 40]).scale(3500).translate([width / 1.4, height / 3.7]);
+    var projection = d3.geo.mercator().center([-110, 40.75]).scale(3500).translate([width / 1.4, height / 3.7]);
 
     var path = d3.geo.path().projection(projection);
 
@@ -216,6 +224,23 @@
     }
   }
   </script>
+  <div class="btn-group btn-group-sm" role="group" aria-label="Small button group" style="margin-left: 40px;    position: absolute;    top: 530px;    left: 0;">
+    <button type="button" class="btn btn-info">2000</button>
+    <button type="button" class="btn btn-info">2001</button>
+    <button type="button" class="btn btn-info">2002</button>
+    <button type="button" class="btn btn-info">2003</button>
+    <button type="button" class="btn btn-info">2004</button>
+    <button type="button" class="btn btn-info">2005</button>
+    <button type="button" class="btn btn-info">2006</button>
+    <button type="button" class="btn btn-info">2007</button>
+    <button type="button" class="btn btn-info">2008</button>
+    <button type="button" class="btn btn-info">2009</button>
+    <button type="button" class="btn btn-info">2010</button>
+    <button type="button" class="btn btn-info">2011</button>
+    <button type="button" class="btn btn-info">2012</button>
+    <button type="button" class="btn btn-info">2013</button>
+  </div>
+
 </body>
 
 </html>
