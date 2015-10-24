@@ -80,7 +80,7 @@
 
   var svg = d3.select("#storypanel").append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate(0,0)");
 
-  var projection = d3.geo.mercator().center([-110, 40]).scale(3500).translate([width / 1.4, height / 3.7]);
+  var projection = d3.geo.mercator().center([-110, 40.75]).scale(3500).translate([width / 1.4, height / 3.7]);
 
   var path = d3.geo.path().projection(projection);
 
