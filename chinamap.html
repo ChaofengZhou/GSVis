@@ -1,142 +1,147 @@
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title>Utah Map</title>
-		<script src="http://d3js.org/d3.v3.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="papaparse.min.js"></script>
-		<script src="ParseData.js"></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script>
-/* This block is about how to make a Title*/
-var PROPERTY = ['Accept pm2.5 AQI', ];
-		</script>
-		<style>
-			#property, #storypanel {
-				float: left;
-				margin-top: 10px;
-			}
+<head>
+  <meta charset="utf-8">
+  <title>Utah Map</title>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="papaparse.min.js"></script>
+  <script src="ParseData.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+  /* This block is about how to make a Title*/
+  var PROPERTY = ['Accept pm2.5 AQI', ];
+  </script>
+  <style>
+  #property,
+  #storypanel {
+    float: left;
+    margin-top: 10px;
+  }
+  
+  .btn {
+    margin-bottom: 4px;
+  }
+  </style>
+</head>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Utah Air Quality</a>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</nav>
 
-			.btn {
-				margin-bottom: 4px;
-			}
-		</style>
-	</head>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Utah Air Quality</a>
-			</div>
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
+<body>
+  <div id="property">
+    <ul style="list-style: none;">
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          PM 2.5
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Accept PM 2.5 AQI
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Sulfate PM 2.5 LC
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Sulfur PM 2.5 LC
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Ozone
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Relative Humidity
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Carbon Monoxide
+        </button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+          Sulfur Dioxide
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div id="storypanel"></div>
+  <script>
+  var property = ['PM2.5', 'Accept pm2.5 AQI', 'sulfate PM 2.5 LC', 'sulfure PM 2.5 LC', 'Ozone', 'relative humidity', 'Carbon monoxide', 'sulfur dioxide'];
 
-	<body>
-		<div id="property">
-			<ul style="list-style: none;">
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						PM 2.5
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block"> 
-						Accept PM 2.5 AQI
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Sulfate PM 2.5 LC
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Sulfur PM 2.5 LC
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Ozone
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Relative Humidity
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Carbon Monoxide
-					</button>
-				</li>
-				<li>
-					<button type="button" class="btn btn-primary btn-lg btn-block">
-						Sulfur Dioxide
-					</button>
-				</li>
-			</ul>
-		</div>
-		<div id="storypanel"></div>
-		<script>
-			var property = ['PM2.5', 'Accept pm2.5 AQI', 'sulfate PM 2.5 LC', 'sulfure PM 2.5 LC', 'Ozone', 'relative humidity', 'Carbon monoxide', 'sulfur dioxide'];
-		
-			for(k in property){
-				drawGeo(property[k]);
-			}
-			
-			//current show version
-			d3.select("#id0").attr("display", "block");
-			
-			d3.selectAll("button").on("click",  function(d, index){
-				d3.selectAll(".geo").attr("display", "none");
-				d3.select("#id"+index).attr("display", "block");
-			})
-			
-			function drawGeo(p) {
-				var width = 400;
-				var height = 600;
+  for (k in property) {
+    drawGeo(property[k]);
+  }
 
-				var svg = d3.select("#storypanel").append("svg").attr("width", width).attr("height", height).attr("id", getId(p)).attr("display", "none").attr("class", "geo").append("g").attr("transform", "translate(0,0)");
+  //current show version
+  d3.select("#id0").attr("display", "block");
 
-				var projection = d3.geo.mercator().center([-110, 40]).scale(3500).translate([width / 1.4, height / 3.7]);
+  d3.selectAll("button").on("click", function(d, index) {
+    d3.selectAll(".geo").attr("display", "none");
+    d3.select("#id" + index).attr("display", "block");
+  })
 
-				var path = d3.geo.path().projection(projection);
+  function drawGeo(p) {
+    var width = 400;
+    var height = 600;
 
-				var color = d3.scale.category20();
+    var svg = d3.select("#storypanel").append("svg").attr("width", width).attr("height", height).attr("id", getId(p)).attr("display", "none").attr("class", "geo").append("g").attr("transform", "translate(0,0)");
 
-				d3.json("utah.geojson", function(error, root) {
-					if (error)
-						return console.error(error);
-					console.log(root.features);
+    var projection = d3.geo.mercator().center([-110, 40.75]).scale(3500).translate([width / 1.4, height / 3.7]);
 
-					svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
-						return "white";
-					}).attr("d", path).on("mouseover", function(d, i) {
-						d3.select(this).attr("fill", "yellow");
-					}).on("mouseout", function(d, i) {
-						d3.select(this).attr("fill", " white");
-					});
-				});
-			}
-			
-			function getId(name){
-				for(k in property){
-					if(property[k] == name){
-						return "id"+k;
-					}
-				}
-			}
+    var path = d3.geo.path().projection(projection);
 
-		</script>
-	</body>
+    var color = d3.scale.category20();
+
+    d3.json("utah.geojson", function(error, root) {
+      if (error)
+        return console.error(error);
+      console.log(root.features);
+
+      svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
+        return "white";
+      }).attr("d", path).on("mouseover", function(d, i) {
+        d3.select(this).attr("fill", "yellow");
+      }).on("mouseout", function(d, i) {
+        d3.select(this).attr("fill", " white");
+      });
+    });
+  }
+
+  function getId(name) {
+    for (k in property) {
+      if (property[k] == name) {
+        return "id" + k;
+      }
+    }
+  }
+  get_data("Davis", 2003, "Ozone", function(data) {});
+  get_data_max_min("Ozone", function(max, min) {
+    var m = min,
+      M = max;
+  });
+  </script>
+</body>
 
 </html>
