@@ -68,22 +68,22 @@
   var color = d3.scale.category20();
 
   d3.json("utah.geojson", function(error, root) {
-        if (error)
-          return console.error(error);
-        console.log(root.features);
+    if (error)
+      return console.error(error);
+    console.log(root.features);
 
-        svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
-          return "white";
-        }).attr("d", path).on("mouseover", function(d, i) {
-          d3.select(this).attr("fill", "yellow");
-        }).on("mouseout", function(d, i) {
-          d3.select(this).attr("fill", " white");
-        });
-      }
+    svg.selectAll("path").data(root.features).enter().append("path").attr("stroke", "#000").attr("stroke-width", 1).attr("fill", function(d, i) {
+      return "white";
+    }).attr("d", path).on("mouseover", function(d, i) {
+      d3.select(this).attr("fill", "yellow");
+    }).on("mouseout", function(d, i) {
+      d3.select(this).attr("fill", " white");
+    });
+  });
 
 
 
-      get_data("Davis", 2003, "Ozone", function(data) {});
+  get_data("Davis", 2003, "Ozone", function(data) {});
   </script>
 </body>
 
